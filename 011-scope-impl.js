@@ -52,7 +52,7 @@ function GreetBot() {
   greetBot2.greetWithChinese('peter');			// 你好 peter
 
 
-  // IIFE implmentation
+  // IIFE implmentation, like create a class instance...
 
   var greetBot = (function() {
     var hello = {
@@ -78,4 +78,3 @@ function GreetBot() {
   greetBot.greetWithEnglish('henry');			// hello henry
   greetBot.greetWithChinese('henry');			// 你好 henry
 
-  
