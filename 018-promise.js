@@ -54,6 +54,17 @@ function chargeMoney(money) {
 }
 
 
+// -- why promise is executed before timeout??
+
+setTimeout(() => { console.log('hi timeout')}, 0);
+
+Promise.resolve('hi promise').then(function(value) {
+  console.log(value);
+});
+
+console.log("normal");
+
+
 // --
 
 var a = new Promise(function(resolve, reject) {
