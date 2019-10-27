@@ -64,6 +64,7 @@ one();
 // -------------------------------------------
 
 // scope chain => every function has a connection to global context
+// and it's parent context
 
 // chain...
 function sayMyName() {
@@ -79,3 +80,42 @@ function sayMyName() {
 }
 
 console.log(sayMyName()()());
+
+// -------------------------------------------
+// each function scope, contains the [[Scopes]]
+// 
+
+
+// ------------------------------------
+// weird behaviour that the variable become global
+
+function weird() {
+    height = 10; // no var, no const => become global variable
+    return height;
+}
+
+height=20;
+console.log(weird()); // 10
+console.log(height); // 10
+
+// js weird...
+
+var heyhey = function doodle() {
+    return 'heyhey';
+}
+heyhey();
+
+
+function a() {
+    value=10;
+    return function b() {
+        console.log(value);
+    }
+}
+var c = a();
+value = 20;
+c();
+
+
+
+
