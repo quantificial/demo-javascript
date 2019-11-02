@@ -50,7 +50,7 @@ const obj = {
     sing() {
         console.log('a', this);
         var anotherFunc = () => {
-            console.log('b', this) // not how this location is, it is how the function was called.
+            console.log('b', this) // use =>, this will be the parent contains this object
         }
         anotherFunc();
     }
@@ -80,9 +80,9 @@ const obj = {
         console.log('a', this);
         var self = this;
         var anotherFunc = function() {
-            console.log('b', this) // not how this location is, it is how the function was called.
+            console.log('b', self) 
         }
-        return anotherFunc; // this is obj
+        return anotherFunc 
     }
 }
 obj.sing()();
