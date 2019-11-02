@@ -51,3 +51,60 @@ function getMaxNumber(arr) {
 console.log(getMaxNumber(array))
 
 
+// function currying
+
+function multiplay(a,b) {
+    return a*b
+}
+
+let multiplayByTwo =  multiplay.bind(this,2);
+
+console.log(multiplayByTwo(3)) // become 2*3
+
+// exerecise
+
+var b = {
+    name: 'jay',
+    say() { console.log(this)} // { name: jay, say: [Function: say]}
+}
+
+var c = {
+    name: 'jay',
+    say() { return function() { console.log(this)}} // window object
+}
+
+var d = {
+    name: 'jay',
+    say() { return () => console.log(this)} // { name: jay, say: [Function: say]}
+}
+
+//b.say()
+//c.say() // => Function
+//c.say()() // => window object or node global object
+d.say()() // => // { name: jay, say: [Function: say]}
+
+// exercise:
+
+const character = {
+    name: 'Simon',
+    getCharacter() {
+        return this.name
+    }
+};
+
+const giveMeTheCharacterNOW = character.getCharacter;
+
+console.log('?', giveMeTheCharacterNOW.call(character));
+console.log('?', giveMeTheCharacterNOW.apply(character));
+console.log('?', giveMeTheCharacterNOW.bind(character)());
+
+// or 
+const giveMeTheCharacterNOWb = character.getCharacter.bind(character);
+console.log('?', giveMeTheCharacterNOWb());
+
+
+
+
+
+
+
