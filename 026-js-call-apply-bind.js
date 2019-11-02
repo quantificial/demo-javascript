@@ -103,8 +103,3 @@ const giveMeTheCharacterNOWb = character.getCharacter.bind(character);
 console.log('?', giveMeTheCharacterNOWb());
 
 
-
-
-
-
-

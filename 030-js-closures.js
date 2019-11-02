@@ -85,3 +85,44 @@ const makeNuclearButton = () => {
 
 
 
+// exercise
+// only initialize once
+
+let view;
+function initialize() {
+    let called = 0;
+    return function() {
+        if(called >0) {
+            return;
+        } else {
+            called++;
+            view = 'weapon';
+            console.log('view has been reset');
+        } 
+    }  
+}
+
+const startOnce = initialize();
+startOnce();
+startOnce();
+console.log(view);
+
+// exercise, how to solve...to print 1,2,3,4
+
+const array = [1,2,3,4];
+for(var i=0; i< array.length;i++) {  
+        setTimeout(function() {
+            console.log('I am at index ' + i)
+    },1000)
+}
+
+const array = [1,2,3,4];
+for(var i=0; i< array.length;i++) {
+    (function execute(j) {
+        setTimeout(function() {
+            console.log('I am at index ' + j)
+        },1000)
+    })(i)
+}
+
+
