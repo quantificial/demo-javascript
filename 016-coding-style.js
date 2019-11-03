@@ -53,7 +53,7 @@ var myLibrary = (function() {
     var interface = {
           api1: api1,
           api2: api2,
-          ...
+          //...
         };
     function api1(name) {
         // ...
@@ -109,8 +109,10 @@ function myFn(height, width) {
     decision();
   }
   
-  function drinkCoffee() {...} 
-  function startCoding() {...} 
+  function drinkCoffee() {//...
+  } 
+  function startCoding() {//...
+  } 
 
   // --
 
