@@ -7,6 +7,7 @@ Promise.resolve('promise hi').then((data) => {
 })
 
 var f = new Promise((resolve,reject) => {
+    console.log("start promise async call...")
     resolve('another promise')
 })
 
@@ -47,11 +48,11 @@ fetch('https://jsonplaceholder.typicode.com/todos/1')
 // but basically, it's the same
 const hi = (x, time) => new Promise((resolve,reject) => {
     console.log("hi " + x)
-    setTimeout(() => resolve("hi" + x),time)
+    setTimeout(() => resolve("resolved hi " + x),time)
 })
 async function sayHi() {
-    await hi('1', 1000) // await, wait the function complete
-    await hi('2', 2000)
+     await hi('1', 1000).then(x => {console.log(x)}) // await, wait the function complete
+     await hi('2', 2000).then(x => {console.log(x)})
 
     return 'completed!'
 }
