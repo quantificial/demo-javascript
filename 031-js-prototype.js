@@ -130,6 +130,30 @@ function a() {
 
 var obj = {name:'tom'}
 
-a.bind(obj)();
+// -- test __proto__
+
+// --- 
+
+function a() {
+    console.log('a')
+};
+
+a.prototype.hi = function () {
+    console.log('hi')
+};
+
+var obj = new a();
+obj.hi();
+
+function b() {
+    console.log('b');
+}
+
+var objb = new b();
+objb.__proto__ = obj;
+
+objb.hi();
+
+
 
 
