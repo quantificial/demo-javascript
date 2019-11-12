@@ -134,3 +134,57 @@ console.log(array.flatMap(x=>X))
 // trimStart, trimEnd
 
 
+// test function
+
+function test() {
+    this.name = "test name"
+    console.log(this.name)
+    this.sayHi = function() {
+        console.log("hi")
+    }
+}
+
+var testObj = new test();
+
+console.log(testObj.name);
+testObj.sayHi();
+test.prototype.sayBye = () => {console.log('bye')}
+
+testObj.sayBye();
+
+function beta() {
+    this.name = "beta"
+    console.log("beta");
+}
+
+//beta.__proto__ = test;
+
+var testBeta = new beta();
+testBeta.__proto__ = testObj // must be object??
+testBeta.sayBye();
+
+// test class
+
+class Beta {
+    constructor() {
+        this.name = "beta"
+    }
+
+    sayHi() {
+        console.log('hi', this.name)
+    }
+}
+
+const betaObj = new Beta();
+betaObj.sayHi();
+
+class Release extends Beta {
+    constructor() {
+        super();
+        this.name = "Release"
+    }
+
+}
+
+const objRelease = new Release();
+objRelease.sayHi();
