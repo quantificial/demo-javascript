@@ -189,4 +189,205 @@ export const SearchBox = props => (
 
 ### 28. Card List Component
 - objective is to break down the functionality into many small piece of code, so called components
+- create the card-list component and use props to transfer the properties value and also use props.children to get the node value
+
+```js
+import React from 'react';
+import './card-list.styles.css';
+
+export const CardList = (props) => {
+    return <div className='card-list'>{props.children}</div>;
+};
+```
+- apply css to the card-list which use display gird and divided the screen into four columns
+```css
+.card-list {
+    width: 85vw;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-gap: 20px;
+  }
+```
+- in the main app, transfer the result of the Rest API
+```js
+<CardList>
+    {this.state.monsters.map(monster => (
+        <h1 key={monster.id}>{monster.name}</h1>
+    ))}
+</CardList>
+```
+
+### 29. Card Component
+- the monster data is further moved into the card component
+- the card-list component become just a container to hold the card components
+- create the card component and add the image to it
+```js
+import React from 'react';
+import './card.styles.css'
+
+export const Card = (props) => (
+    <div className='card-container'>
+        <img alt="monster" src={`https://robohash.org/${props.monster.id}?set=set2&size=180x180`} />}
+        <h1>{props.monster.name}</h1>
+        <p>{props.monster.email}</p>
+    </div>
+);
+```
+- add the monster information to Card through props
+```js
+export const CardList = props => (
+    <div className='card-list'>
+        {props.monsters.map(monster=> (
+            <Card key={monster.id} monster={monster}></Card>
+        ))}
+    </div>
+);
+```
+- add the css style for the Card component
+```css
+.card-container {
+    display: flex;
+    flex-direction: column;
+    background-color: #95dada;
+    border: 1px solid grey;
+    border-radius: 5px;
+    padding: 25px;
+    cursor: pointer;
+    -moz-osx-font-smoothing: grayscale;
+    backface-visibility: hidden;
+    transform: translateZ(0);
+    transition: transform 0.25s ease-out;
+  }
+  
+  .card-container:hover {
+    transform: scale(1.05);
+  }
+```
+
+### 30. Exercise: Breaking into Components
+- why need to break?
+- for re-use and the 1st rule, decide on component
+- to place the component into different locations
 - 
+
+### 31. State vs Props
+- state maybe passed into components as a props
+- state pass down to components
+- state usually lives in the root component, i.e. the App
+
+### 32. SearchField State
+- introduce search box
+- need to create the handler function for the on change event of the input box
+- please note that the setState is async function and if console.log immediately after the setState, you won't be able to notice the change in the state, you need to pass a callback function which will be trigger once the setState is completed.
+```js
+  search = (e) => {
+    this.setState({searchField: e.target.value}, () => console.log(this.state));
+  }
+```
+- search box, need to pass the search function through props
+```js
+export const SearchBox = props => (
+    <input
+        className='search-box'
+        type='search'
+        placeholder='search monsters'
+        onChange={props.onSearchChange}
+    />
+)
+```
+
+### 33. React Event
+- onChange is JSX event, not pure HTML, JavaScript event
+
+### 34. Filter State
+- we will not modify the monster array
+- but we will create another array perform the filtering in the render function
+- when the input box value is changed, setState will be called and change the searchField state, and it will trigger the rendering
+```js
+const filterMonsters = monsters.filter(x => x.name.toLowerCase().includes(searchField.toLowerCase()));
+```
+
+### 35. Optional: filter(), includes()
+- refer to the Appendix 1: Key Developer
+
+### 36. SearchBox Component
+- refer to the 32. SearchField State
+- just apply the css to the search input box
+```css
+.search {
+    -webkit-appearance: none;
+    border: none;
+    outline: none;
+    padding: 10px;
+    width: 150px;
+    line-height: 30px;
+    margin-bottom: 30px;
+  }
+```
+
+### 37. where to put state
+- why not put state in the SearchBox component but use the function passed from parent
+- it's because state data could be only flow from oneway down from the parent, so the state should be in the root parent
+
+### 38. Class methods and arrow functions
+- this refer to the current object context
+- if just create a function without using arrow =>, the this will not refer to the current object
+```js
+handleChange(e) {
+    this.setState({searchField: e.target.value}); // error cannot find setState
+}
+```
+- if using arrow to create the function, this could be correctly binded or need to use bind function in constructor
+```js
+this.handleChange = this.handleChange.bind(this);
+
+handleChange = (e) => {
+    this.setState({searchField: e.target.value}, () => console.log(this.state));
+}
+```
+
+### 39. Exercise: Event Binding
+```jsx
+handleClick1() {
+    console.log('handle click1')
+}
+this.handleClick2 = this.handleClick1.bind(this);
+handleClick3 = () => console.log("handle click3");
+
+<button onClick={this.handleClick1()} >click 1</button> // immediately triggerred, click no response
+<button onClick={this.handleClick1} >click 2</button> // click1
+<button onClick={this.handleClick2} >click 3</button> // click1
+<button onClick={this.handleClick3} >click 4</button> // click3
+```
+
+### 40. Quick Note: Binding in React
+- a good rule of thumb is to use arrow functions on any class methods you define and which is not part of React
+
+### 41. Optional: Git + Github
+- refer to Appendix 1: Key Developer Concepts
+
+### 42. Optional: Connecting With SSH To Github
+
+### 43. Deploying the App
+- need to add the google font in the index.html
+```js
+<link href="https://fonts.googleapis.com/css?family=Bigelow+Rules&display=swap" rel="stylesheet" />
+```
+- add the font to the tag
+```js
+.App > h1 {
+  font-family: 'Bigelow Rules';
+  font-size: 72px;
+  color: #0ccac4;
+}
+```
+- add the background in index.css
+```js
+  background: linear-gradient(
+    to left,
+    rgba(7,27,82,1) 0%,
+    rgba(0,128,128,1) 100%
+  )
+```
+
