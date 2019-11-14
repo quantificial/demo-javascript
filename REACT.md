@@ -63,6 +63,20 @@ or use codesandbox
 ### 15. VSCode Font and Settings
 - Operator Mono Lig
 - Install extension snazzy operator to enable the cursive
+- Useful Extension
+  - Rainbow Brackets
+  - Reactjs code snippets
+  - Snazzy Operator
+  - vscode-icons
+  - vscode-styled-component
+  - Auto Close Tag
+  - Babel ES6/ES7
+  - Bittersweet Theme
+  - ESLint
+  - GraphQL
+  - Markdown All in one
+  - Path Intellisense
+  - Prettier - Code formatter
 
 ### 16. Create React App
 - use create-react-app demo-react-monster
@@ -84,5 +98,95 @@ or use codesandbox
 ### 20. Class Components
 - use class instead of function
 - class App extends Components and then define the render function with return of JSX
-  
-  
+- introduce constructor() and also call super() call the parent constructor
+- introduce the state which should be set inside constructor
+
+```js
+this.state = {
+    string : "hello"
+}
+```
+- introduce the setState through button
+```js
+    <button onClick={()=> this.setState({string:'change'})}> change </button>
+```
+
+### 21. Thinking in JSX
+- css class become className
+- JSX variable enclosed by {}
+
+### 22. Dynamic Content
+- set array in state
+```js
+    this.state = {
+      monsters: [
+        {
+          name: 'Frankenstein',
+          id: '1'
+        },
+        {
+          name: 'Dracula',
+          id: '2'
+        },
+        {
+          name: 'Zombie',
+          id: '3'
+        },
+      ]
+    }
+```
+- use map to render the array and need to set **key** such that React knows what element is used and changed
+```js
+          this.state.monsters.map(monster => (
+            <h1 key={monster.id}>{monster.name}</h1>
+          ))
+```
+
+### 23. Optional: map() + key attribute
+- whenever use map function inside of render or have list of same JSX element, it is required to set the **key** attribute
+
+### 24. Single Page Application
+- what is extends Component
+- it's React.Component
+- it's to use render function etc... 
+- SPA is good to call different servers API through JavaScript and it is very dynamic
+
+### 25. Fetching Content
+- introduce the fetch function to call Rest API
+- introduce componentDidMount which is a function that will be called when the component is mounted to the page
+```js
+  componentDidMount(){
+    fetch('https://jsonplaceholder.typicode.com/users')
+    .then(response=>response.json())
+    .then(users=>this.setState({monsters: users}))
+  }
+```
+
+### 26. Optional: Promises
+- refer to Appendix 1: Key Developer Concepts
+
+### 27. Architecting Our App
+- React component could be built by using function
+```js
+import React from 'react'
+import './search-box.styles.css';
+
+export const SearchBox = props => (
+    <input
+        className='search-box'
+        type='search'
+        placeholder='search monsters'
+        onChange={props.onSearchChange}
+    />
+)
+```
+- talk about how to organize the code
+- create folder components and then component-name
+  - components
+    - search-box
+      - search-box.components.jsx
+      - search-box.styles.css
+
+### 28. Card List Component
+- objective is to break down the functionality into many small piece of code, so called components
+- 
