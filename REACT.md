@@ -390,4 +390,121 @@ handleClick3 = () => console.log("handle click3");
     rgba(0,128,128,1) 100%
   )
 ```
+- use yarn to add github pages
+- run the command: yarn add gh-pages
+- need to add some settings to the package.json
+```json
+in root
+"homepage": "https://quantificial.github.io/demo-react-monsters",
+under script
+    "predeploy": "yarn build",
+    "deploy" : "gh-pages -d build"
+```
+- and then run yarn deploy
+- the gitpage will be uploaded to github in another branch
 
+### 44. React and ReactDOM
+- create simple html and add div id="root"
+- include the react and react-dom js library
+- need to create a index.js and render the react component to the id="root"
+- if we don't use JSX, we need to use React.createElement
+```js
+<div id="root">not rendered!</div>
+<script>
+  const App = () => {
+    return React.createElement(
+      'div', {}, React.createElement('hi', {}, 'REACT IS RENDERED!!!')
+    );
+  };
+
+  ReactDOM.render(
+    React.createElement(App),
+    document.getElementById('root')
+  );
+</script>
+```
+
+### 45. Latest React Package Update
+- inside package.json
+- highlight the version number, it will show the latest version
+- also put '^' in front of the version number, the package manager will automatically upgrade the package to use the latest version
+- run 'yarn upgrade' to update the package
+- yarn.lock is the locked version of each packages, to show the actual version used
+- for npm, we can use 'npm update'
+- to check the version
+  - yarn list react react-dom react-scripts
+  - npm list react react-dom react-scripts
+  - to fix bug, use 'npm audit fix'
+
+### 46. Revisting VirtualDOM + Unidirectional Data Flow
+- dom is parent-child relationships
+- React copy actual dom to virtual dom
+- React and then copy the virtual dom to another copy of the virtual dom
+- React will diff the change and apply the change to actual dom
+- enable the chrome Rendering - Paint Flashing to check what components have been update
+- Actions -> Update State -> Trigger Views Rendering
+- Input in the views -> Trigger Action -> Update State -> ... (it is a loop)
+
+
+### 47. Asynchronous setState
+- refer to the project demo-react-asyn-state
+- setState is asycnronize function
+- console.log just after the setState could not show the required value
+- if it needed to use the callback function in the setState function
+```js
+  handleClick = (e) => {
+    let count = this.state.meaningOfLife;
+    this.setState({meaningOfLife: count + 1}, () => {console.log(this.state.meaningOfLife)}); // console log correct
+    console.log(this.state.meaningOfLife); // console log not correct
+  }
+```
+- best practise is to use function to update state
+```js
+    ReactDOM.render(<App increment={2} />, document.getElementById('root'));
+
+    this.setState((prevState, prevProps) => {
+      return {meaningOfLife: prevState.meaningOfLife + prevProps.increment}
+    },
+      () => {console.log(this.state.meaningOfLife)}
+    )
+```
+
+### 48. introducing lifecycle methods
+- refer to the project https://github.com/quantificial/lifecycles-lesson
+
+### 49. React Lifecycle methods - Mounting
+- mounting phase
+- updating phase
+- unmounting phase
+
+### 50. React Lifecycle methods - Updating
+- new state value pass into components
+- it will trigger the lifecycle method in update phase
+- this.foreUpdate() is used to force update the component
+- when the component is re-render, all its child will get render
+- if shouldComponentUpdate return true, it will trigger updating process
+- if it return false, the rendering process will not be trigger
+- it is mainly for performance issue
+```js
+ shouldComponentUpdate(nextProps, nextState) {
+    console.log('shouldComponentUpdate!', nextProps);
+    return nextProps.text !== this.props.text;
+ }
+```
+
+### 50. React Lifecycle methods - Unmounting
+- unmounting phase React will call componentWillUnmount
+
+### 51. When should we use a functional component vs a class component?
+- quiz
+
+### 52. Section Review
+
+
+### 53. the long road ahead
+- build e-commerce website
+
+### 54. Project Overview
+- follow the pdf link to clone the project 
+
+### 58. E-commerce Homepage + SASS setup
