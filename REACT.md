@@ -552,7 +552,7 @@ under .menu-item, => meaning class='menu-item large'
 
 ### 63. Styling Menu Items
 - many styling concept
-```js
+```css
 .menu-item {
     min-width: 30%;
     height: 240px;
@@ -577,4 +577,106 @@ under .menu-item, => meaning class='menu-item large'
     }
 
   }
+```
+- move the background image into a new div tag to manage the transformation
+```js
+    <div className={`${size} menu-item`}>
+        <div className='background-image' style={{
+            backgroundImage: `url(${imageUrl})`
+        }} >
+
+        </div>
+        <div className='content'>
+            <h1 className='title'>{title.toUpperCase()}</h1>
+            <span className='subtitle'>SHOP NOW</span>
+        </div>
+    </div>   
+```
+
+### 64. Routing in React
+- use react-router
+
+### 65. Routing in Our Project
+- yarn add react-router-dom
+- in index.js add import {BrowserRouter} from 'react-router-dom';
+```js
+wrap the '<App />' by the <BrowserRouter>
+
+ReactDOM.render(
+    <BrowserRouter>
+        <App />
+    </BrowserRouter>
+    , document.getElementById('root'));
+```
+- and then add route in the App function
+```js
+function App() {
+  return (
+    <div >
+      <Route exact={true} path='/' component={HomePage} />
+      <Route exact={true} path='/hats' component={HatsPage} />
+    </div>
+  );
+}
+```
+- add switch to only render one of the component
+
+### 66. React Router Dom
+- react route example
+- refer to the react-router-demo
+- console.log for the props of the component to find out the route properties
+  - history
+  - location
+  - match
+```js
+
+        <Route path='/' component={HomePage} />
+        <Route path='/topics' component={TopicsList} />
+        <Route path='/topics/:topicsId' component={TopicDetail} />
+```
+- to show the url parameters
+```js
+const TopicDetail = (props) => {
+  console.log('topics details', props)
+  return (
+    <div>
+      <h1>topics details: {props.match.params.topicsId}</h1>
+    </div>
+  )
+}
+```
+- use link to route
+```js
+<link to='/topics'>Topics</Link>
+```
+- dynamic to build the link
+```js
+<Link to={`${props.match.url}/13`}>TO TOPIC 13</Link>
+```
+
+### 67 withRouter()
+- basic natvigation setup
+- powerup the MenuItem with the higher order function withRouter, such that it could access the history, match properties, and no need to pass from the parent
+- and then use onClick function to trigger the redirect by call history.push
+```js
+import React from 'react';
+import {withRouter} from 'react-router-dom';
+
+import './menu-item.styles.scss'
+
+const MenuItem = ({title, imageUrl, size, history, linkUrl, match}) => (
+    <div className={`${size} menu-item`} onClick={()=>history.push(`${match.url}${linkUrl}`)}>
+        <div className='background-image' style={{
+            backgroundImage: `url(${imageUrl})`
+        }} >
+
+        </div>
+        <div className='content'>
+            <h1 className='title'>{title.toUpperCase()}</h1>
+            <span className='subtitle'>SHOP NOW</span>
+        </div>
+    </div>    
+)
+
+export default withRouter(MenuItem);
 ```
