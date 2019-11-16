@@ -508,4 +508,73 @@ under script
 - follow the pdf link to clone the project 
 
 ### 58. E-commerce Homepage + SASS setup
+- refer to the project - demo-react-clothing
+- define the layout of the clothing website
+- contain the homepage and then directory menu and then menu item
+- need to define the className for the css styling
+- introducing the sass
+- use yarn add node-sass to add sass component
+- need to use the .scss instead of .sass
 
+### 59. Project Files + Modules
+- introduce node_modules
+- the lib dependencies issues
+
+### 60. Project Component Architecture
+- look at the components folder and see how they are connected
+
+
+### 61. CSS and SCSS files
+
+
+### 62. Homepage and Directory Components
+- create components and pages
+- the menu-item, props are passed through value and the assigned the backgroundImage to each of the item
+- additional 'size' information is used to control the image height through the scss setting
+```js
+const MenuItem = ({title, imageUrl, size}) => (
+    <div style={{
+        backgroundImage: `url(${imageUrl})`
+    }} 
+    className={`${size} menu-item`}>
+        <div className='content'>
+            <h1 className='title'>{title}</h1>
+            <span className='subtitle'>SHOP NOW</span>
+        </div>
+    </div>    
+)
+
+under .menu-item, => meaning class='menu-item large'
+    &.large {
+        height: 380px;
+    }
+```
+
+### 63. Styling Menu Items
+- many styling concept
+```js
+.menu-item {
+    min-width: 30%;
+    height: 240px;
+    flex: 1 1 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid black;
+    margin: 0 7.5px 15px; 
+    overflow: hidden; /* overflow area will not be shown due to transform scale*/
+
+    &:hover { /* when hover*/
+      cursor: pointer;
+      & .background-image { /* menu-item:hover .background-image */
+        transform: scale(1.1);
+        transition: transform 6s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+      }
+
+      & .content { /* .menu-item:hover .content */
+        opacity: 0.9;
+      }
+    }
+
+  }
+```
