@@ -508,3 +508,9 @@ under script
 - follow the pdf link to clone the project 
 
 ### 58. E-commerce Homepage + SASS setup
+- define the layout of the clothing website
+- contain the homepage and then directory menu and then menu item
+- need to define the className for the css styling
+- introducing the sass
+- use yarn add node-sass to add sass component
+- 
