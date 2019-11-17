@@ -680,3 +680,460 @@ const MenuItem = ({title, imageUrl, size, history, linkUrl, match}) => (
 
 export default withRouter(MenuItem);
 ```
+
+### 68. Shopping Data
+
+
+### 69. Shop Page
+- create the shop page to display the collection items
+- collection data is stored in a js file and import SHOP_DATA from './shop.data'
+- in the shop page, loop the collections and then use new component CollectionPreview to display the items
+```js
+    render() {
+        const {collections} = this.state;
+        return (
+            <div className='shop-page'>
+            {
+                collections
+                .map(({id, ...otherCollectionProps}) => { // pass the collection data in quicker way
+                    return (
+                        <CollectionPreview key={id} {...otherCollectionProps}/>
+                    )
+                })
+            }
+            </div>
+        )
+    }
+```
+- create the CollectionPreview component and get the items and loop through the items to display only 4 items
+```js
+const CollectionPreview = ({title, items}) => { // we only need the title and items data
+    return (
+        <div className='collection-preview'>
+            <h1 className='title'>{title.toUpperCase()}</h1>
+            <div className='preview'>
+                {
+                    items
+                    .filter((item,idx) => idx < 4) // only to show 4 items
+                    .map((item)=> (
+                        <div key={item.id}>{item.name}</div>
+                    ))
+                }
+
+            </div>
+        </div>
+    )
+}
+```
+
+### 70. Collection Item
+- add collection item, similarly, the props are passed from the parent, CollectionPreview
+```js
+const CollectionItem = ({ id, name, price, imageUrl }) => {
+  return (
+    <div className="collection-item">
+      <div className="image" style={{ 
+        backgroundImage: `url(${imageUrl})` 
+      }} />
+      <div className="collection-footer">
+        <span className="name">{name}</span>
+        <span className="price">{price}</span>
+      </div>
+    </div>
+  );
+};
+```
+- collection preview change
+```js
+<div className='preview'>
+    {
+        items
+        .filter((item,idx) => idx < 4) // only to show 4 items
+        .map(({id, ...otherItemProps})=> (
+            <CollectionItem key={id} {...otherItemProps} />
+        ))
+    }
+
+</div>
+```
+- for ths styling, flex box is mainly used.
+- collection preview is a flex container and in column direction
+- justify-content: space-between is used for adjust the position of each items
+
+### 71. Header Component
+- header component is added in the app component and before the router switch
+```js
+function App() {
+  return (
+    <div >
+      <Header />
+      <Switch>
+        <Route exact path='/' component={HomePage} />
+        <Route path='/shop' component={ShopPage} />
+      </Switch>
+    </div>
+  );
+}
+```
+- simple functional component, use flex box to control the position
+- the logic is SVG format and import as ReactComponent
+```js
+const Header = (props) => {
+    return (
+        <div className='header'>
+            <Link className='logo-containers' to='/'> 
+                <Logo className='logo' />
+            </Link>
+            <div className='options'> // justify-content: flex-end; display: flex;
+                <Link className='option' to='/shop'>
+                    SHOP
+                </Link>
+                <Link className='option' to='/shop'>
+                    CONTACT
+                </Link>
+            </div>
+        </div>
+    )
+}
+```
+
+### 72. Importing SVG in React
+- new syntax for import SVG
+```js
+import {ReactComponent as logo} from 'logo.svg';
+```
+
+### 73. Introducing Forms in React
+- need to design how to re-use components
+- need to think carefully where the state lives
+
+### 74. Sign in Component
+- develop the sign in page
+- develop the sign-in component
+- sign in and sign up page is just used to display the component
+```js
+const SignInAndSignUpPage = () => (
+    <div className='sign-in-and-sign-up'>
+        <SignIn />
+    </div>
+)
+```
+- sign in component for user to input the email and password
+- need to define the change handler for the input and submit handler
+
+### 75. Form input component
+- create a custom input component
+- label is absolute position and will sit on the input area
+- but when it's focus or have value, it will shrink and move top as an effect
+```js
+const FormInput = ({handleChange, label, ...otherProps}) => (
+    <div className='group'>
+        <input className='form-input' onChange={handleChange} {...otherProps} />
+        {
+            label ? (
+            <label className={`${otherProps.value.length ? 'shrink' : ''} form-input-label`}>
+                {label}
+            </label>) : null
+        }
+    </div>
+)
+```
+
+```css
+@mixin shrinkLabel {
+  top: -14px;
+  font-size: 12px;
+  color: $main-color;
+}
+```
+
+### 76. Custom Button Component
+- create the custom button and it is a simple functional component
+```js
+const CustomButton = ({children, ...otherProps}) => {
+    return (
+        <button className='custom-button' {...otherProps}>
+            {children}
+        </button>
+    )
+}
+```
+- to use it
+```js
+<CustomButton type='submit'>Sign In</CustomButton>
+```
+
+### 77. Firebase + User Authentication
+
+### 78. Firebase Introduction
+- database
+- authentication
+- server
+
+### 79. adding a project to firebase
+- login to the console and create the project
+- copy the firebase configuration
+- and then use yarn add firebase
+
+### 80. note about github
+
+### 81. google sign in authentication
+- enable google authentication
+- setup the firebase auth environment
+
+```js
+import firebase from "firebase/app";
+import "firebase/firestore";
+import "firebase/auth";
+
+const config = {
+};
+
+firebase.initializeApp(config);
+
+export const auth = firebase.auth();
+export const firestore = firebase.firestore();
+
+const provider = new firebase.auth.GoogleAuthProvider();
+provider.setCustomParameters({ prompt: "select_account" });
+export const signInWithGoogle = () => auth.signInWithPopup(provider);
+
+export default firebase;
+```
+- add button
+```js
+<CustomButton onClick={signInWithGoogle}>Sign In with Google</CustomButton>
+```
+
+### 82. cloning from this point on
+
+### 83. Google Sign In Authentication 2
+- to get the login user information and set the state
+- change the App component become class component
+- set the callback function onAuthStateChanged
+- and also set the unsubscribeFormAuth
+```js
+class App extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      currentUser: null
+    };
+  }
+
+  unsubscribeFormAuth = null;
+
+  componentDidMount() {
+    this.unsubscribeFormAuth = auth.onAuthStateChanged(user => {
+      this.setState({ currentUser: user });
+      console.log(user);
+    });
+  }
+
+  componentWillUnmount() {
+    this.unsubscribeFormAuth();
+  }
+```
+### 85. google sign in authentication 3
+- build the sign in and sign out part
+- build the sign out button on the header
+```js
+<div className='options'>
+    <Link className='option' to='/shop'>
+        SHOP
+    </Link>
+    <Link className='option' to='/shop'>
+        CONTACT
+    </Link>
+    {
+        currentUser ?
+        <div className='option' onClick={()=> auth.signOut()}>
+            SIGN OUT
+        </div> : 
+        <Link className='option' to='/signin'>SIGN IN</Link>
+    }
+</div>
+```
+- modify the custom button to allow to have a flag isGoogleSignIn button
+```html
+<CustomButton onClick={signInWithGoogle} isGoogleSignIn>Sign In with Google</CustomButton>
+
+// so in the custom button to check the flag and insert the google-sign-in class
+const CustomButton = ({children, isGoogleSignIn, ...otherProps}) => {
+    return (
+        <button className={`${isGoogleSignIn?'google-sign-in':''} custom-button`} {...otherProps}>
+            {children}
+        </button>
+    )
+}
+```
+- define the style
+```css
+    &.google-sign-in {
+        background-color: #4285f4;
+        color: white;
+        
+        &:hover {
+            background-color: #357ae8;
+            border: none;
+        }
+    }
+```
+- fix the box sizing issue
+```js
+* {
+    box-sizing: border-box;
+}
+```
+
+### 86. firebae firestore
+- introduce the firestore which is nosql database
+- collection(users) => user => collection(cartItem) => item
+```js
+firestore.collection('users').doc('xxxx').collection('cartItem').doc('xxxx');
+firestore.doc('/users/xxxx/cartItems/xxxxx');
+firestore.collection('/users');
+```
+
+### 87. optional: sync await
+
+### 88. storig user data in firebase
+- create a function to get the data from firebase and check whether the user exists or not
+- if it it not exist, we can create the user
+```js
+//in app.js
+  componentDidMount() {
+    this.unsubscribeFormAuth = auth.onAuthStateChanged(async user => {
+      this.setState({ currentUser: user });
+
+      createUserProfileDocument(user)
+      //console.log(user);
+    });
+  }
+
+// in the firebase util
+// it is an async function
+export const createUserProfileDocument = async (userAuth, additionalData) => {
+    if(!userAuth) return; // exit
+    
+    const userRef = firestore.doc(`users/${userAuth.uid}`);
+    console.log(userRef);
+    const snapShot = await userRef.get();
+    console.log(snapShot);
+
+    if(!snapShot.exists) {
+        const {displayName, email} = userAuth;
+        const createdAt = new Date();
+
+        try {
+            await userRef.set({
+                displayName,
+                email,
+                createdAt,
+                ...additionalData
+            })
+        } catch(error) {
+            console.log('error creating users', error.message);
+        }
+    }
+
+    return userRef;
+}
+```
+
+### 89. storing user data in our app
+- get the snapshot data through the following function and then set to the state
+- use onSnapshot
+```js
+  componentDidMount() {
+    this.unsubscribeFormAuth = auth.onAuthStateChanged(async userAuth => {
+      //this.setState({ currentUser: userAuth });
+
+      if(userAuth) {
+        const userRef = await createUserProfileDocument(userAuth);
+        userRef.onSnapshot(snapShot => {
+          //console.log(snapShot.data())
+          this.setState({
+            currentUser : {
+              id: snapShot.id,
+              ...snapShot.data()
+            }
+          }, () => {console.log(this.state)})
+        })
+      }
+
+      this.setState({
+        currentUser: userAuth
+      }, () => {console.log('???', this.state)})
+
+
+    });
+  }
+```
+
+### 90. sign up component
+- create sign up component
+- similar to sign in component but we need to use firebase API to create the user
+```js
+    handleSubmit = async event => {
+        event.preventDefault();
+        const {displayName, email, password, confirmedPassword} = this.state;
+        if(password !== confirmedPassword) {
+            alert("passwords don't match");
+            return;
+        }
+
+        try {
+            const {user} = await auth.createUserWithEmailAndPassword(email, password);
+            await createUserProfileDocument(user, {displayName} )
+
+        }catch(error) {
+            console.log(error);
+        }
+    }
+
+    handleChange = event => {
+        const {name, value} = event.target;
+        this.setState({[name]: value});
+    }
+```
+
+### Sign Up With Email and Password
+- add sign up component to the sign up and sign in page
+```js
+const SignInAndSignUpPage = () => (
+    <div className='sign-in-and-sign-up'>
+        <SignIn />
+        <SignUp />
+    </div>
+)
+```
+- with correct styling
+```css
+.sign-in-and-sign-up {
+    display: flex;
+    width: 850px;
+    justify-content: space-between;
+    margin: 30px auto;
+}
+```
+
+### 92. sign in with email and password
+- need to finish the onSubmit 
+```js
+    handleSubmit = async event => {
+        event.preventDefault();
+        const {email, password} = this.state;
+
+        try {
+            await auth.signInWithEmailAndPassword(email,password);
+            this.setState({email:'',password:''});
+        }catch(error) {
+            console.log(error)
+        }
+    }
+```
+
+### 93. section reivew
+
+
