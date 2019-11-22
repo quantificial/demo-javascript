@@ -513,7 +513,7 @@ under script
 - contain the homepage and then directory menu and then menu item
 - need to define the className for the css styling
 - introducing the sass
-- use yarn add node-sass to add sass component
+- use **yarn add node-sass** to add sass component
 - need to use the .scss instead of .sass
 
 ### 59. Project Files + Modules
@@ -1137,3 +1137,130 @@ const SignInAndSignUpPage = () => (
 ### 93. section reivew
 
 
+### 95. Redux Introduction
+- traditional react app contains state in different component and it will become very difficult to manage
+- redux solve this problem and provide a single massive state for each component to access and update
+
+### 96. Redux Concept
+- single source of truth
+- state is read only
+- changes using pure function
+
+- Action(such as click) => Root Reducer(it's a pure function) => Store (state) => Dom Changes
+
+- Flux Pattern
+  - Action => Dispatcher => Store => View
+- MVC Pattern
+  - Action => Controller => Many Many Model <>=> Many Many Views
+
+### 96. Redux in our application
+- original , all state in the top component
+- the problem is, for example, cart component require the current user state, so the current user must be passed through from the top App component and then through the header component, however, header does not require the current user.
+- drilling down props pattern is the bad pattern
+
+
+### 97. Relux Actions and Reducers
+- different components => generate Actions
+- Actions => update different Reducer states ( slice of state)
+- Slice of state combine to form the Root Reducer
+- the Root Reducer will be passed into different components
+- components fire action -> SET_CURRENT_USER
+- the payload maybe {type: string, payload: any}
+- => update the user reducer with the pay load
+
+
+### 98. Setting Up Redux 1
+- install redux
+- yarn add redux redux-logger react-redux
+- create the userRedux
+```js
+const INITIAL_STATE = {
+    currentUser: null
+}
+const userReducer = (state = INITIAL_STATE, action) => {
+    switch (action.type) {
+        case 'SET_CURRENT_USER':
+            return {
+                ...state,
+                currentUser: action.payload
+            }
+        default:
+            return state;
+    }
+}
+```
+- and then combine in the root reduer
+```js
+import {combineReducers} from 'redux';
+import userReducer from './user/user.reducer';
+export default combineReducers({
+    user: userReducer,
+})
+```
+
+### 100 setup up redux 2
+- create the store from root reducer
+```js
+import {createStore, applyMiddleware} from 'redux';
+import logger from 'redux-logger';
+
+import rootReducer from './root-reducer';
+
+const middlewares = [logger];
+
+const store = createStore(rootReducer, applyMiddleware(...middlewares));
+
+export default store;
+```
+- and then add the store to the provider
+```js
+//index.js
+
+ReactDOM.render(
+    <Provider store={store}>
+        <BrowserRouter>
+            <App />
+        </BrowserRouter>
+    </Provider>
+    , document.getElementById('root'));
+```
+- create the set user action
+```js
+export const setCurrentUser = user => ({
+    type: 'SET_CURRENT_USER',
+    payload: user
+});
+```
+### 101. connect and MapStateToProps
+### 102. mapDispatchToProps
+
+- to pass the root reducer state to the components as props
+- mapStateToProps is used to pass the state from root reducer to the components props
+```js
+const mapStateToProps = (state) => ({
+    currentUser: state.user.currentUser
+})
+
+export default connect(mapStateToProps)(Header);
+```
+
+- to fire the action and set the state to the reducer
+- mapDispatchToProps is to map the dispatch function to the component which will set the state and fire the action
+```js
+const mapDispatchToProps = dispatch => ({
+  setCurrentUser: user => dispatch(setCurrentUser(user))
+})
+
+export default connect(null, mapDispatchToProps)(App);
+```
+
+```js
+const {setCurrentUser} = this.props;
+
+// fire action
+setCurrentUser({
+  currentUser : {
+    id: snapShot.id,
+    ...snapShot.data()
+  }
+```
