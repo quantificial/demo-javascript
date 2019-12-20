@@ -4,8 +4,11 @@ function add(a, b) {
     return a + b;
 }
 console.log(add(1, 2));						// 3
+
+// call => use to pass parameters
 console.log(add.call(null, 1, 2));			// 3
 
+// apply to pass the arguments in array
 console.log(add.apply(null, [5, 10]));
 
 
