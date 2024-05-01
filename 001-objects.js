@@ -73,7 +73,7 @@ myBooleanObj.valueOf();		// true
 myArray.valueOf();		    // []
 
 
-// write properties to object
+
 'use strict';
 
 // test read property
